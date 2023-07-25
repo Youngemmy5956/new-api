@@ -1,5 +1,5 @@
 import express from "express";
-import User_model from "../model/user.js";
+import Model from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
@@ -8,7 +8,7 @@ const router = express.Router();
 // const auth = verifyToken;
 
 // register api
-router.post("/auth/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { first_Name, last_Name, email, password } = req.body;
   if (!first_Name || !last_Name || !email || !password) {
     return res.status(400).json({ message: "Please fill all fields" });
@@ -37,7 +37,7 @@ router.post("/auth/register", async (req, res) => {
 
 // login api
 
-router.post("/auth/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "Please fill all fields" });
