@@ -4,6 +4,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+require ('dotenv').config();
 
 app.set('view engine', 'ejs');
 
@@ -25,6 +26,7 @@ app.listen(port , () => console.log('App listening on port ' + port));
 
 const passport = require('passport');
 var userProfile;
+console.log(userProfile);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -45,8 +47,8 @@ passport.deserializeUser(function(obj, cb) {
 /*  Google AUTH  */
  
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GOOGLE_CLIENT_ID = 'our-google-client-id';
-const GOOGLE_CLIENT_SECRET = 'our-google-client-secret';
+const GOOGLE_CLIENT_ID = process.env.CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET;
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
