@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
         // password,
         // firstName: user.firstName,
         // lastName: user.lastName,
-      },
+      },    
       process.env.JWT_SECRECT_KEY,
       {
         expiresIn: "1h",
