@@ -33,8 +33,6 @@ router.post("/register", async (req, res) => {
   res.status(201).json(user);
 });
 
-
-
 // login api
 
 router.post("/login", async (req, res) => {
