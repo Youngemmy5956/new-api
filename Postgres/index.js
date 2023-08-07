@@ -1,23 +1,29 @@
+const path = require ('path');
+require ('dotenv').config ({
+    override: true,
+    path: path.join (__dirname, '.env')
+
+}); 
 
 const { Pool, Client } = require("pg");
 
-const credentials = {
-  user: "postgres",
-  host: "localhost",
-  database: "nodedemo",
-  password: "12345678909",
-  port: 5432,
-};
+// const credentials = {
+//   user: "postgres",
+//   host: "localhost",
+//   database: "nodedemo",
+//   password: "12345678909",
+//   port: 5432,
+// };
 
 // Connect with a connection pool.
 
-async function poolDemo() {
-  const pool = new Pool(credentials);
-  const now = await pool.query("SELECT NOW()");
-  await pool.end();
+// async function poolDemo() {
+//   const pool = new Pool(credentials);
+//   const now = await pool.query("SELECT NOW()");
+//   await pool.end();
 
-  return now;
-}
+//   return now;
+// }
 
 // Connect with a client.
 
