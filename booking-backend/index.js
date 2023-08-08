@@ -2,7 +2,10 @@ import express from "express";
 import * as dotenv from "dotenv";
 import connectDB from "./config/mongo.js";
 import cors from "cors";
-import userRouter from "./routes/user-routes";
+import userRouter from "./routes/user-routes.js";
+import adminRouter from "./routes/admin-routes.js";
+import movieRouter from "./routes/movie-routes.js";
+import bookingsRouter from "./routes/booking-routes.js";
 
 
 
