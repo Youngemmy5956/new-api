@@ -15,7 +15,27 @@ const pool = new Pool({
     password: process.env.PASSWORD,
     port: 5432,
 
-})
+});
+
+(async () => {
+    
+    try{
+        const client = await pool.connect();
+    const { rows } = await client.query('SELECT  current_users');
+    const currentUser = rows[0]['current_users'];
+    console.log(currentUser);
+    } catch (err) {
+        console.log(err);
+    } finally {
+        client.release();
+    }
+
+})();
+
+
+
+
+
 
 // const credentials = {
 //   user: "postgres",
