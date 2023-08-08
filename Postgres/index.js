@@ -13,15 +13,15 @@ const pool = new Pool({
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
-    port: 5432,
+    port:  process.env.PORT
 
 });
 
 (async () => {
+    const client = await pool.connect();
     
     try{
-        const client = await pool.connect();
-    const { rows } = await client.query('SELECT  current_users');
+    const { rows } = await pool.query('SELECT  current_users');
     const currentUser = rows[0]['current_users'];
     console.log(currentUser);
     } catch (err) {
