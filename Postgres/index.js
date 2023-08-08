@@ -1,41 +1,32 @@
-const path = require ('path');
-require ('dotenv').config ({
-    override: true,
-    path: path.join (__dirname, '.env')
+const path = require("path");
+require("dotenv").config({
+  override: true,
+  path: path.join(__dirname, ".env"),
+});
 
-}); 
+const { Pool, Client } = require("pg");
 
-// const { Pool, Client } = require("pg");
-
-
-const pool = new Pool({     
-    user: process.env.USER,
-    host: process.env.HOST,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD,
-    port:  process.env.PORT
-
+const pool = new Pool({
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
 });
 
 (async () => {
-    const client = await pool.connect();
-    
-    try{
-    const { rows } = await pool.query('SELECT  current_users');
-    const currentUser = rows[0]['current_users'];
+  const client = await pool.connect();
+
+  try {
+    const { rows } = await pool.query("SELECT  current_users");
+    const currentUser = rows[0]["current_users"];
     console.log(currentUser);
-    } catch (err) {
-        console.log(err);
-    } finally {
-        client.release();
-    }
-
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.release();
+  }
 })();
-
-
-
-
-
 
 // const credentials = {
 //   user: "postgres",
