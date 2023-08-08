@@ -1,5 +1,5 @@
 import express from "express";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 import connectDB from "./config/mongo.js";
 import cors from "cors";
 import userRouter from "./routes/user-routes.js";
