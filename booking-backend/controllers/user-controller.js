@@ -54,7 +54,7 @@ export const singup = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   const id = req.params.id;
-  const { name, email, password } = req.body;
+  const { name, email} = req.body;
   if (
     !name &&
     name.trim() === "" &&
@@ -65,14 +65,12 @@ export const updateUser = async (req, res, next) => {
   ) {
     return res.status(422).json({ message: "Invalid Inputs" });
   }
-  const hashedPassword = bcrypt.hashSync(password);
 
   let user;
   try {
     user = await User.findByIdAndUpdate(id, {
       name,
-      email,
-      password: hashedPassword,
+      email
     });
   } catch (errr) {
     return console.log(errr);
