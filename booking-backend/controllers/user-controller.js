@@ -1,44 +1,57 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import Bookings from "../models/Bookings.js";
 export const getAllUsers = async (req, res, next) => {
-  let users;
   try {
-    users = await User.find();
+    const users = await User.find();
+    res.status(200).json({ message: "book successfully listed", users });
   } catch (err) {
-    return console.log(err);
+    res.status(404).json({ message: err.message });
   }
-  if (!users) {
-    return res.status(500).json({ message: "Unexpected Error Occured" });
-  }
-  return res.status(200).json({ users });
 };
 
 export const singup = async (req, res, next) => {
   const { name, email, password } = req.body;
-  if (
-    !name &&
-    name.trim() === "" &&
-    !email &&
-    email.trim() === "" &&
-    !password &&
-    password.trim() === ""
-  ) {
-    return res.status(422).json({ message: "Invalid Inputs" });
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ message: "password is less than 8 characters" });
   }
-  const hashedPassword = bcrypt.hashSync(password);
-  let user;
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "all fields are required" });
+  }
+  if (email.indexOf("@") === -1) {
+    return res.status(400).json({ message: "invalid email" });
+  }
+  if (email.indexOf(".") === -1) {
+    return res.status(400).json({ message: "invalid email" });
+  }
   try {
-    user = new User({ name, email, password: hashedPassword });
-    user = await user.save();
+    bcrypt.hash(password, 10).then(async (hash) => {
+      await User.create({
+        name,
+        email,
+        password: hash,
+      }).then((user) => {
+        const maxAge = 3 * 60 * 60;
+        const token = jwt.sign(
+          { id: user._id, email },
+          process.env.JWT_SECRECT_KEY,
+          { expiresIn: maxAge }
+        );
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(201).json({ message: "User successfully created", user });
+      });
+    });
   } catch (err) {
-    return console.log(err);
+    res.status(400).json({
+      message: "User not successfully created",
+      error: err.message,
+    });
   }
-  if (!user) {
-    return res.status(500).json({ message: "Unexpected Error Occured" });
-  }
-  return res.status(201).json({ id: user._id });
 };
+
 export const updateUser = async (req, res, next) => {
   const id = req.params.id;
   const { name, email, password } = req.body;
