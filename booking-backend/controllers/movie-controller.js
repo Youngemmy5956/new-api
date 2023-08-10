@@ -8,10 +8,10 @@ export const addMovie = async (req, res, next) => {
     return res.status(404).json({ message: "Token Not Found" });
   }
 
-  // let adminId;
+  let adminId;
 
   // verify token
-  jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
+  jwt.verify(extractedToken, process.env.JWT_SECRECT_KEY, (err, decrypted) => {
     if (err) {
       return res.status(400).json({ message: `${err.message}` });
     } else {
