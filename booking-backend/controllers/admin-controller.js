@@ -47,31 +47,34 @@ export const adminLogin = async (req, res, next) => {
   if (!email && email.trim() === "" && !password && password.trim() === "") {
     return res.status(422).json({ message: "Invalid Inputs" });
   }
-  let existingAdmin;
+  let existingUser;
   try {
-    existingAdmin = await Admin.findOne({ email });
+    existingUser = await Admin.findOne({ email });
   } catch (err) {
     return console.log(err);
   }
-  if (!existingAdmin) {
+  if (!existingUser) {
     return res.status(400).json({ message: "Admin not found" });
   }
   const isPasswordCorrect = bcrypt.compareSync(
     password,
-    existingAdmin.password
+    existingUser.password
   );
 
   if (!isPasswordCorrect) {
     return res.status(400).json({ message: "Incorrect Password" });
   }
 
-  const token = jwt.sign({ id: existingAdmin._id }, process.env.SECRET_KEY, {
-    expiresIn: "7d",
-  });
+  const maxAge = 3 * 60 * 60;
+
+  const token = jwt.sign({ id: existingUser._id, email },  process.env.JWT_SECRECT_KEY,
+    { expiresIn: maxAge }
+  );
+  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
   return res
     .status(200)
-    .json({ message: "Authentication Complete", token, id: existingAdmin._id });
+    .json({ message: "Authentication Complete", token, id: existingUser._id });
 };
 
 export const getAdmins = async (req, res, next) => {
