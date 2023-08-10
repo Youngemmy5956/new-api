@@ -4,33 +4,42 @@ import jwt from "jsonwebtoken";
 
 export const addAdmin = async (req, res, next) => {
   const { email, password } = req.body;
-  if (!email && email.trim() === "" && !password && password.trim() === "") {
-    return res.status(422).json({ message: "Invalid Inputs" });
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ message: "password is less than 8 characters" });
   }
-
-  let existingAdmin;
+  if ( !email || !password) {
+    return res.status(400).json({ message: "all fields are required" });
+  }
+  if (email.indexOf("@") === -1) {
+    return res.status(400).json({ message: "invalid email" });
+  }
+  if (email.indexOf(".") === -1) {
+    return res.status(400).json({ message: "invalid email" });
+  }
   try {
-    existingAdmin = await Admin.findOne({ email });
+    bcrypt.hash(password, 10).then(async (hash) => {
+      await Admin.create({
+        email,
+        password: hash,
+      }).then((user) => {
+        const maxAge = 3 * 60 * 60;
+        const token = jwt.sign(
+          { id: user._id, email },
+          process.env.JWT_SECRECT_KEY,
+          { expiresIn: maxAge }
+        );
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(201).json({ message: "User successfully created", user });
+      });
+    });
   } catch (err) {
-    return console.log(err);
+    res.status(400).json({
+      message: "User not successfully created",
+      error: err.message,
+    });
   }
-
-  if (existingAdmin) {
-    return res.status(400).json({ message: "Admin already exists" });
-  }
-
-  let admin;
-  const hashedPassword = bcrypt.hashSync(password);
-  try {
-    admin = new Admin({ email, password: hashedPassword });
-    admin = await admin.save();
-  } catch (err) {
-    return console.log(err);
-  }
-  if (!admin) {
-    return res.status(500).json({ message: "Unable to store admin" });
-  }
-  return res.status(201).json({ admin });
 };
 
 export const adminLogin = async (req, res, next) => {

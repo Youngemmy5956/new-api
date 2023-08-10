@@ -1,24 +1,22 @@
 import mongoose from "mongoose";
 
-const bookingSchema = new mongoose.Schema({
-  movie: {
-    type: mongoose.Types.ObjectId,
-    ref: "Movie",
+const adminSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    unique: true,
     required: true,
   },
-  date: {
-    type: Date,
+  password: {
+    type: String,
     required: true,
+    minLength: 6,
   },
-  seatNumber: {
-    type: Number,
-    required: true,
-  },
-  user: {
-    type: mongoose.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  addedMovies: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Movie",
+    },
+  ],
 });
 
-export default mongoose.model("Booking", bookingSchema);
+export default mongoose.model("Admin", adminSchema);
