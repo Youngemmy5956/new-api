@@ -54,7 +54,7 @@ export const singup = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   const id = req.params.id;
-  const { name, email} = req.body;
+  const { name, email } = req.body;
   if (
     !name &&
     name.trim() === "" &&
@@ -70,7 +70,7 @@ export const updateUser = async (req, res, next) => {
   try {
     user = await User.findByIdAndUpdate(id, {
       name,
-      email
+      email,
     });
   } catch (errr) {
     return console.log(errr);
