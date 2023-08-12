@@ -9,7 +9,7 @@ export const addAdmin = async (req, res, next) => {
       .status(400)
       .json({ message: "password is less than 8 characters" });
   }
-  if ( !email || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: "all fields are required" });
   }
   if (email.indexOf("@") === -1) {
@@ -56,10 +56,7 @@ export const adminLogin = async (req, res, next) => {
   if (!existingUser) {
     return res.status(400).json({ message: "Admin not found" });
   }
-  const isPasswordCorrect = bcrypt.compareSync(
-    password,
-    existingUser.password
-  );
+  const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
 
   if (!isPasswordCorrect) {
     return res.status(400).json({ message: "Incorrect Password" });
@@ -67,7 +64,9 @@ export const adminLogin = async (req, res, next) => {
 
   const maxAge = 3 * 60 * 60;
 
-  const token = jwt.sign({ id: existingUser._id, email },  process.env.JWT_SECRECT_KEY,
+  const token = jwt.sign(
+    { id: existingUser._id, email },
+    process.env.JWT_SECRECT_KEY,
     { expiresIn: maxAge }
   );
   res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
