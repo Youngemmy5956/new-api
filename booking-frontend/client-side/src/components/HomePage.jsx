@@ -15,8 +15,8 @@ const HomePage = () => {
     <Box width={"100%"} height="100%" margin="auto" marginTop={2}>
       <Box margin={"auto"} width="80%" height={"40vh"} padding={2}>
         <img
-          src="https://i.ytimg.com/vi/bweRG6WueuM/maxresdefault.jpg"
-          alt="Brahmastra"
+          src="https://i0.wp.com/gyonlineng.com/wp-content/uploads/2023/08/sddefault.jpg?resize=640%2C480"
+          alt="jagunjagun"
           width={"100%"}
           height={"100%"}
         />
