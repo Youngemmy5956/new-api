@@ -7,13 +7,10 @@ import adminRouter from "./routes/admin-routes.js";
 import movieRouter from "./routes/movie-routes.js";
 import bookingsRouter from "./routes/booking-routes.js";
 
-
-
-
 dotenv.config();
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3001",
@@ -39,4 +36,3 @@ async function connect() {
   }
 }
 connect();
-
