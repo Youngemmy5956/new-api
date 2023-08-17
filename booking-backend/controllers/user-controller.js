@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Bookings from "../models/Bookings.js";
+import emailValidator from "deep-email-validator";
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -10,6 +11,21 @@ export const getAllUsers = async (req, res, next) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+// async function isEmailValid(email) {
+//   return emailValidator.validate(email)
+// }
+// {
+//   valid: false,
+//   validators: {
+//     regex: { valid: true },
+//     typo: { valid: true },
+//     disposable: { valid: true },
+//     mx: { valid: true },
+//     smtp: { valid: false, reason: 'Mailbox not found.' }
+//   },
+//   reason: 'smtp'
+// }
 
 export const singup = async (req, res, next) => {
   const { name, email, password } = req.body;
