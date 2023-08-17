@@ -22,7 +22,7 @@ const HomeLayout = () => {
           height="100%"
         />
         <Typography variant="h4" textAlign={"center"}>
-          Latest Releases
+          Trending
         </Typography>
       </Box>
       <Box padding={5} margin="auto">
