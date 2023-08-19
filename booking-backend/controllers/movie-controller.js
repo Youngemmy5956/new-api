@@ -13,7 +13,7 @@ export const addMovie = async (req, res, next) => {
   // verify token
   jwt.verify(extractedToken, process.env.JWT_SECRECT_KEY, (err, decrypted) => {
     if (err) {
-      console.log(extractedToken)
+      console.log(extractedToken);
       return res.status(400).json({ message: `${err.message}` });
     } else {
       adminId = decrypted.id;
