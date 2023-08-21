@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Bookings from "../models/Bookings.js";
-import emailValidator from "deep-email-validator";
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
