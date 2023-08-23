@@ -66,7 +66,7 @@ export const singup = async (req, res, next) => {
 };
 
 const validateUserSignUp = async (email, otp) => {
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     return [false, "User not found"];
   }
@@ -74,7 +74,7 @@ const validateUserSignUp = async (email, otp) => {
     return [false, "Invalid OTP"];
   }
   const updatedUser = await User.findByIdAndUpdate(user._id, {
-    $ser: { isVerified: true },
+    $set: { active: true },
   });
   return [true, updatedUser];
 };
