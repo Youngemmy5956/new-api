@@ -20,10 +20,18 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: MovieBooking,
-  to: emmanuelgodwin558@gmail.com,
+  to: emmanuelgodwin558,
   subject: 'Nodemailer Project',
   text: 'Hi from your nodemailer project'
 };
+
+transporter.sendMail(mailOptions, function(err, data) {
+  if (err) {
+    console.log("Error " + err);
+  } else {
+    console.log("Email sent successfully");
+  }
+});
 
 
 export const getAllUsers = async (req, res, next) => {
