@@ -15,6 +15,10 @@ const userSchema = new Schema({
     required: true,
     minLength: 6,
   },
+  otp: {
+    type: String,
+    required: true, 
+  }, 
   bookings: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
 });
 

@@ -2,37 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Bookings from "../models/Bookings.js";
-import nodemailer from "nodemailer";
-
-
-
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    type: 'OAuth2',
-    user: process.env.MAIL_USERNAME,
-    pass: process.env.MAIL_PASSWORD,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN
-  }
-});
-
-let mailOptions = {
-  from: 'emmanuelgodwin558@gmail.com',
-  to:  'emmanuelgodwin558@gmail.com',
-  subject: 'Nodemailer Project',
-  text: 'Hi from your nodemailer project'
-};
-
-transporter.sendMail(mailOptions, function(err, data) {
-  if (err) {
-    console.log("Error " + err);
-  } else {
-    console.log("Email sent successfully");
-  }
-});
-
+import { sendMail } from "../services/mail.js";
+import { generateOTP } from "../services/OTP.js";
 
 export const getAllUsers = async (req, res, next) => {
   try {
@@ -65,7 +36,8 @@ export const singup = async (req, res, next) => {
         name,
         email,
         password: hash,
-      }).then((user) => {
+        otp: otpGenerated,
+      }).then(async (user) => {
         const maxAge = 3 * 60 * 60;
         const token = jwt.sign(
           { id: user._id, email },
@@ -73,7 +45,16 @@ export const singup = async (req, res, next) => {
           { expiresIn: maxAge }
         );
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(201).json({ message: "User successfully created", user });
+
+        try {
+          await sendMail({
+            to: email,
+            OTP: otpGenerated,
+          });
+          res.status(201).json({ message: "User successfully created", user });
+        } catch (err) {
+          console.log("unable to signup");
+        }
       });
     });
   } catch (err) {
@@ -82,6 +63,29 @@ export const singup = async (req, res, next) => {
       error: err.message,
     });
   }
+};
+
+const validateUserSignUp = async (email, otp) => {
+  const user = User.findOne({ email });
+  if (!user) {
+    return [false, "User not found"];
+  }
+  if (user && user.otp !== otp) {
+    return [false, "Invalid OTP"];
+  }
+  const updatedUser = await User.findByIdAndUpdate(user._id, {
+    $ser: { isVerified: true },
+  });
+  return [true, updatedUser];
+};
+
+export const verifyEmail = async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return res.status(400).json({ message: "all fields are required" });
+  }
+  const user = await validateUserSignUp(email, otp);
+  res.send(user);
 };
 
 export const updateUser = async (req, res, next) => {
