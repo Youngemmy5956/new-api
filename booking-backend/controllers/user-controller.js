@@ -18,6 +18,13 @@ let transporter = nodemailer.createTransport({
   }
 });
 
+let mailOptions = {
+  from: MovieBooking,
+  to: emmanuelgodwin558@gmail.com,
+  subject: 'Nodemailer Project',
+  text: 'Hi from your nodemailer project'
+};
+
 
 export const getAllUsers = async (req, res, next) => {
   try {
