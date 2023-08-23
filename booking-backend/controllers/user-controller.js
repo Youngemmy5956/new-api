@@ -2,6 +2,23 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Bookings from "../models/Bookings.js";
+import nodemailer from "nodemailer";
+
+
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    refreshToken: process.env.REFRESH_TOKEN
+  }
+});
+
+
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -10,21 +27,6 @@ export const getAllUsers = async (req, res, next) => {
     res.status(404).json({ message: err.message });
   }
 };
-
-// async function isEmailValid(email) {
-//   return emailValidator.validate(email)
-// }
-// {
-//   valid: false,
-//   validators: {
-//     regex: { valid: true },
-//     typo: { valid: true },
-//     disposable: { valid: true },
-//     mx: { valid: true },
-//     smtp: { valid: false, reason: 'Mailbox not found.' }
-//   },
-//   reason: 'smtp'
-// }
 
 export const singup = async (req, res, next) => {
   const { name, email, password } = req.body;
