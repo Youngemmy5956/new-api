@@ -19,8 +19,8 @@ let transporter = nodemailer.createTransport({
 });
 
 let mailOptions = {
-  from: process.env.MAIL_USERNAME,
-  to: process.env.MAIL_USERNAME,
+  from: 'emmanuelgodwin558@gmail.com',
+  to:  'emmanuelgodwin558@gmail.com',
   subject: 'Nodemailer Project',
   text: 'Hi from your nodemailer project'
 };
