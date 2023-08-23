@@ -19,8 +19,8 @@ let transporter = nodemailer.createTransport({
 });
 
 let mailOptions = {
-  from: MovieBooking,
-  to: emmanuelgodwin558,
+  from: process.env.MAIL_USERNAME,
+  to: process.env.MAIL_USERNAME,
   subject: 'Nodemailer Project',
   text: 'Hi from your nodemailer project'
 };
