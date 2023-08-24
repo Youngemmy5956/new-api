@@ -30,6 +30,7 @@ export const singup = async (req, res, next) => {
   if (email.indexOf(".") === -1) {
     return res.status(400).json({ message: "invalid email" });
   }
+  const otpGenerated = generateOTP();
   try {
     bcrypt.hash(password, 10).then(async (hash) => {
       await User.create({
@@ -155,9 +156,19 @@ export const login = async (req, res, next) => {
     return res.status(400).json({ message: "Incorrect Password" });
   }
 
+ 
+  const maxAge = 3 * 60 * 60;
+
+  const token = jwt.sign(
+    { id: existingUser._id, email },
+    process.env.JWT_SECRECT_KEY,
+    { expiresIn: maxAge }
+  );
+  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
   return res
     .status(200)
-    .json({ message: "Login Successfull", id: existingUser._id });
+    .json({ message: "Authentication Complete", token, id: existingUser._id, existingUser });
 };
 export const getBookingsOfUser = async (req, res, next) => {
   const id = req.params.id;

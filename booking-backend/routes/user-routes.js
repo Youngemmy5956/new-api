@@ -18,7 +18,7 @@ userRouter.post("/signup", singup);
 userRouter.put("/:id", updateUser);
 userRouter.delete("/:id", deleteUser);
 userRouter.post("/login", login);
-userRouter.post("verifyEmail", verifyEmail);
+userRouter.post("/verifyEmail", verifyEmail);
 userRouter.get("/bookings/:id", getBookingsOfUser);
 
 export default userRouter;
