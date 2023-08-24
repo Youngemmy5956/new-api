@@ -22,7 +22,7 @@ export const sendMail = async (params) => {
     html: `<div>
         <h1>Booking App</h1> <br /> <br />
         <h2>Verify Email</h2> <br /> <br />
-        <p>Booking App received a request to create an account for you. Before we proceed, we need to verify the email address verification code: ${params.OTP} <br />
+        <p>Booking App received a request to create an account for you. Before we proceed, we need to verify the email address with this verification code: ${params.OTP} <br />
         If you did not register with booking app, please ignore this message as it's possible that someone else might have registered on your behalf.... <br />
         Kind Regards, <br />
         The Booking App Team
