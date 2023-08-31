@@ -19,7 +19,7 @@ export const createMessage = async (req, res) => {
     const { name, email, subject } = req.body;
 
     // Save the email to MongoDB
-    const emailRecord = new Message({ name, email, subject, message });
+    const emailRecord = new Message({ name, email, subject });
     await emailRecord.save();
 
     const mailOptions = {
