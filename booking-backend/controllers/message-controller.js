@@ -1,4 +1,5 @@
 import Message from "../models/Message.js";
+import nodemailer from "nodemailer";
 
 // Send the email
 const transporter = nodemailer.createTransport({
@@ -22,8 +23,8 @@ export const createMessage = async (req, res) => {
     await emailRecord.save();
 
     const mailOptions = {
-      from: "your-email@example.com",
-      to: "recipient@example.com", // Your email where you want to receive the message
+      from: "emmanuelgodwin558@gmail.com",
+      to: "emmanuelgodwin558@gmail.com", // Your email where you want to receive the message
       subject: subject,
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     };
