@@ -28,8 +28,9 @@ export const createMessage = async (req, res) => {
     });
 
     const mailOptions = {
-      to: "recipient@example.com", // Your email where you want to receive the message
-      subject: subject,
+      from: "Mech_Api_Form",
+      to: "emmanuelgodwin558@gmail.com", // Your email where you want to receive the message
+      subject: " Contact Form Submission",
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${subject}`,
     };
 
@@ -39,11 +40,9 @@ export const createMessage = async (req, res) => {
   } catch (error) {
     if (error.code === "EAUTH") {
       // Authentication error (invalid email/password)
-      res
-        .status(401)
-        .json({
-          error: "Authentication failed. Check your email and password.",
-        });
+      res.status(401).json({
+        error: "Authentication failed. Check your email and password.",
+      });
     } else {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
