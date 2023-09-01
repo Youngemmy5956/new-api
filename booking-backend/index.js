@@ -8,6 +8,7 @@ import movieRouter from "./routes/movie-routes.js";
 import bookingsRouter from "./routes/booking-routes.js";
 import nodemailer from "nodemailer";
 import messageRouter from "./routes/message-routes.js";
+import appointmentRouter from "./routes/appointment-routes.js";
 
 
 dotenv.config();
@@ -56,6 +57,7 @@ app.use("/admin", adminRouter);
 app.use("/movie", movieRouter);
 app.use("/booking", bookingsRouter);
 app.use("/message", messageRouter);
+app.use("/appointment", appointmentRouter);
 
 async function connect() {
   try {
