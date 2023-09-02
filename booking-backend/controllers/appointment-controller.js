@@ -27,7 +27,7 @@ export const createAppointment = async (req, res) => {
     const mailOptions = {
       from: "Mech_Api_Form",
       to: "emmanuelgodwin558@gmail.com", // Your email where you want to receive the message
-      subject: "Contact Form Submission",
+      subject: "Appointment Form Submission",
       text: `Name: ${name}\nEmail: ${location}\nSubject: ${subject}\nMessage: ${message}`, // Include 'message' here
     };
 
